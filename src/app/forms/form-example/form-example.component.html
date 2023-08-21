@@ -1,0 +1,98 @@
+<div class="container">
+  <h1>Simple Form</h1>
+  <form [formGroup]="form" (ngSubmit)="handleSubmit()" autocomplete="off">
+    <div class="mb-3">
+      <label for="name" class="form-label">Nombre</label>
+      <input type="text" class="form-control" id="name" formControlName="name">
+      <div class="form-text text-danger" *ngIf="form.get('name')?.hasError('required') && form.get('name')?.touched">
+        Nombre es requerido.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Correo</label>
+      <input type="email" class="form-control" id="email" placeholder="name@example.com"
+             formControlName="email">
+      <div class="form-text text-danger" *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched">
+        Email es requerido.
+      </div>
+      <div class="form-text text-danger" *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched">
+        Email no es valido.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="text" class="form-control" id="password" formControlName="password">
+      <div class="form-text text-danger"
+           *ngIf="form.get('password')?.hasError('required') && form.get('password')?.touched">
+        Password es requerido.
+      </div>
+      <div class="form-text text-danger"
+           *ngIf="form.get('password')?.hasError('minlength') && form.get('password')?.touched">
+        Password debe tener almenos 6 caracteres.
+      </div>
+      <div class="form-text text-danger"
+           *ngIf="form.get('password')?.hasError('passwordStrength') && form.get('password')?.touched">
+        La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.
+      </div>
+    </div>
+    <div class="mb-3">
+      <label>Canciones</label>
+      <div formArrayName="songs">
+        <div class="d-flex justify-content-evenly mb-2" *ngFor="let song of songFormArray.controls; let i = index"
+             [formGroupName]="i">
+          <label for="songName">Nombre Canción:</label>
+          <input type="text" id="songName" formControlName="songName"/>
+          <label for="songDescription">Descripción:</label>
+          <input type="text" id="songDescription" formControlName="songDescription"/>
+          <button type="button" class="btn btn-danger " (click)="removeItem(i)">Borrar</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="addItem()">Agregar Canción</button>
+    </div>
+    <div class="d-flex justify-content-end gap-1">
+      <button (click)="handleReset()" type="button"
+              class="btn btn-secondary">
+        Reset
+      </button>
+      <button type="submit"
+              class="btn btn-primary ">
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="container">
+  <div class="row">
+    <h2>Valores</h2>
+    <p>
+      {{ form.value  | json}}
+    </p>
+  </div>
+  <div class="row">
+    <h2>Errores</h2>
+    <span>Name :</span>
+    <code>
+      {{form.controls['name'].errors | json}}
+    </code>
+    <span>Correo :</span>
+    <code>
+      {{form.controls['email'].errors | json}}
+    </code>
+    <span>Password :</span>
+    <code>
+      {{form.controls['password'].errors | json}}
+    </code>
+  </div>
+  <div class="row">
+    <h2>Estados</h2>
+    <span>Pristine</span>
+    <pre>{{ form.pristine| json }}</pre>
+
+    <span>Touched</span>
+    <pre>{{ form.touched| json }}</pre>
+    <span>Dirty</span>
+    <pre>{{ form.dirty| json }}</pre>
+    <p>Estado Form: {{ form.status }}</p>
+  </div>
+</div>
