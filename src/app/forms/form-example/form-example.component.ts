@@ -21,12 +21,14 @@ export class FormExampleComponent {
 
   handleSubmit() {
     console.log(this.form.controls);
-    if (this.form.valid) {
-      console.log('Form data submitted:', this.form.value);
 
-    } else {
-      console.log('Form data is invalid');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
+
+    console.log('Form data submitted:', this.form.value);
+
   }
 
   handleReset() {
